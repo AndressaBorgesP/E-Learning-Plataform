@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduCODE</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .inputBox button{
+    width: 100%;    
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    background: #451F55;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    
+}
+
+.inputBox button:hover{
+    background: #724E91;
+    transition: all 0.3s ease;
+}
+
+.alert{
+    width: 100%;
+    background: rgb(151, 250, 190);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    display: none;
+}
+
+::placeholder{
+    font-size: 16px;
+}
+    </style>
+
+</head>
+<body>
+    
+
+<header class="header">
+
+    <a href="home.html" class="logo"> EduCODE </a>
+
+    <div id="menu-btn" class="fas fa-bars"></div>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">home</a></li>
+            <li><a href="about.html">Sobre</a></li>
+            <li><a href="course-1.html">Cursos</a></li>
+            <li><a href="#">conteúdos +</a>
+                <ul>
+                    <li><a href="teachers.html">Professores</a></li>
+                    <li><a href="blog.html">blogs</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contato</a></li>
+            <li><a href="chat.html">Ajuda</a></li>
+        </ul>
+    </nav>
+
+</header>
+
+
+<section class="heading">
+    <h3>Faça contato</h3>
+    <p> <a href="home.html">home >></a> contato </p>
+</section>
+
+<section class="contact">
+
+    <div class="row">
+
+        <form action="" id="contactForm">
+            <div class="alert">Enviado com sucesso</div>
+            <h3>Mande mensagem</h3>
+            <div class="inputBox">
+                <input type="text" id="name" placeholder="seu nome" class="box">
+            </div>
+            <div class="inputBox">
+                <input type="email" id="emailid" placeholder="seu email" class="box">
+            </div>
+            <div class="inputBox">
+                <textarea id="msgContent" placeholder="digite sua mensegem..."  cols="30" rows="10"></textarea>
+            </div>
+            <div class="inputBox">
+                <button type="submit">Enviar</button>
+            </div>           
+        </form>    
+
+    </div>
+
+</section>
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>explorar</h3>
+            <a href="home.html"> <i class="fas fa-arrow-right"></i> home </a>
+            <a href="about.html"> <i class="fas fa-arrow-right"></i> sobre </a>
+            <a href="teachers.html"> <i class="fas fa-arrow-right"></i> professores </a>
+            <a href="blog.html"> <i class="fas fa-arrow-right"></i> blog </a>
+        </div>
+
+        <div class="box">
+            <h3>cursos</h3>
+            <a href="course-1.html"> <i class="fas fa-arrow-right"></i> cursos </a>
+            <a href="course-2.html"> <i class="fas fa-arrow-right"></i> módulos </a>
+            <a href="course-3.html"> <i class="fas fa-arrow-right"></i> vídeo </a>
+        </div>
+
+        <div class="box">
+            <h3>links</h3>
+            <a href="#"> <i class="fas fa-arrow-right"></i> feedback </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Ajuda </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> artigos </a>
+            <a href="contact.html"> <i class="fas fa-arrow-right"></i> contato </a>
+        </div>
+
+        <div class="box">
+            <h3>outras redes</h3>
+            <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#"> <i class="fab fa-github"></i> github </a>
+        </div>
+
+    </div>
+
+    <div class="credit"> criado por <span>Andressa Borges</span></div>
+
+</section>
+
+<script src="js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "Here is the link to the project created on Firebase";
+
+    const firebaseConfig = {
+               
+            // Here is the project configuration.
+    };
+  
+    // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var contactFormDB = firebase.database().ref('contactForm');
+
+document.getElementById('contactForm').addEventListener("submit", submitForm)
+
+function submitForm(e){
+    e.preventDefault();
+
+  var name = getElementVal("name");
+  var emailid = getElementVal("emailid");
+  var msgContent = getElementVal("msgContent");
+
+  saveMessages(name, emailid, msgContent);
+
+   document.querySelector(".alert").style.display = "block";
+
+   setTimeout(() => {
+         document.querySelector(".alert").style.display = "none";
+    }, 3000);
+}
+
+const saveMessages = (name, emailid, msgContent) => {
+var newContactForm = contactFormDB.push();
+    newContactForm.set({
+         name: name,
+         emailid: emailid,
+         msgContent: msgContent,
+    });
+
+    document.getElementById("contactForm").reset();
+};
+
+const getElementVal = (id) => {
+   return document.getElementById(id).value;
+};
+
+  </script>
+
+</body>
+</html>
